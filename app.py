@@ -85,4 +85,4 @@ def getstuff():
     print("in the thing")
 
 api.add_resource(Subscriber, "/subscriber/")
-app.run(debug=True)
+app.run(debug=True, host="0.0.0.0")
