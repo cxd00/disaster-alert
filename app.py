@@ -1,10 +1,18 @@
 from flask import Flask, render_template, jsonify, request
 from flask_restful import Api, Resource, reqparse
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 import json
 import http.client
 from google.cloud import language_v1
 from google.cloud.language_v1 import enums
 from google.cloud.language import types
+
+cred = credentials.Certificate('./key.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 app = Flask(__name__)
 api = Api(app)
@@ -77,6 +85,7 @@ class Subscriber(Resource):
 
 @app.route('/')
 def show():
+    print(nlpStuff(("+19105995176", "I need water")))
     return render_template('index.html')
 
 @app.route('/data', methods=["GET"])
@@ -106,8 +115,21 @@ def getStuff():
         data = res.read()
         print(data.decode("utf-8"))
     elif info[1] == "S":
-        last = "S"
-        print(nlpStuff(info))
+        last = "S" 
+        conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        payload = json.dumps({
+            "from":"+19195335013",
+            "to": info[0],
+            "text":"Enter what you either need or have for disaster relief!"
+        })
+        headers = {
+            'Content-Type': 'application/json', 
+            'Authorization': ' Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k='
+        }
+        conn.request("POST", "/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        print(data.decode("utf-8")) 
 
     elif info[1] == "F":
         last = "F"
@@ -141,6 +163,40 @@ def getStuff():
         res = conn.getresponse()
         data = res.read()
         print(data.decode("utf-8"))
+    elif last == "S":
+        last == "B"
+        results = nlpStuff(info)
+        for r in results:
+            if r["part"] == "NOUN":
+                item = r["word"]
+        for r in results:
+            txt_ref = db.collection(u'text-info')
+            person = []
+            if r["part"] == "VERB":
+                if r["word"] in ["want", "need"]:
+                    query_ref = txt_ref.where(u'word', u'==', item)
+                    for q in query_ref:
+                        person.append(query_ref["user"])
+                elif r["word"] in ["have"]:
+                    query_ref = txt_ref.where(u'word', u'==', item)
+                    for q in query_ref:
+                        person.append(query_ref["user"])
+        
+        ppl = [str(ppl + j + "\n") for j in person]
+        conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        payload = json.dumps({
+            "from":"+19195335013",
+            "to": info[0],
+            "text":ppl
+        })
+        headers = {
+            'Content-Type': 'application/json', 
+            'Authorization': ' Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k='
+        }
+        conn.request("POST", "/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        print(data.decode("utf-8"))
     return "why"
 
 
@@ -155,11 +211,15 @@ def nlpStuff(info):
     response = client.analyze_syntax(document, encoding_type=encoding_type)
     results = []
     for token in response.tokens:
-        txt = token.txt
-        results.append({
-            "word" : token.txt,
-            "part" : enums.PartOfSpeech.Tag(token.part_of_speech.tag).name
-        })
+        r = {
+            u"user" : info[0],
+            u"word" : str(token.text.content),
+            u"part" : str(enums.PartOfSpeech.Tag(token.part_of_speech.tag).name)
+        }
+        print(r)
+        results.append(r)
+        doc_ref = db.collection(u'text-info').document()
+        doc_ref.set(r)
     return results
 
     
