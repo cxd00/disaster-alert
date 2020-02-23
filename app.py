@@ -184,12 +184,11 @@ def getStuff():
                     for q in query_ref:
                         person.append(q.to_dict()["user"])
         
-        ppl = [str(ppl + j + "\n") for j in person]
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
         payload = json.dumps({
             "from":"+19195335013",
             "to": info[0],
-            "text":ppl
+            "text":"{} is interested in your disaster relief request!".format(person[0])
         })
         headers = {
             'Content-Type': 'application/json', 
