@@ -6,31 +6,42 @@ let base = "dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0
 
 async function callBandwidth(){
   try {
-    let dt = await fetch('/data')
-    console.log(dt)
-    dt = await dt.json()
-    console.log(dt)
+    let request = await fetch('/data')
+    subscriberInfo = JSON.parse(await request.json());
+
+    let subscriberNumbers = []
+    for (s in subscriberInfo["s"]) {
+        loopMessage("+1" + String(subscriberInfo["s"][s]["number"]))
+    }
     
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", " Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k=");
-
-    var raw = JSON.stringify({"from":"+19195335013","to":"+19105995176","text":"bump it"});
-
-    var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-    };
-
-    let res = await fetch("https://api.catapult.inetwork.com/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", requestOptions);
-
-    console.log(res);
   } catch (error) {
       console.log(error);
   }
   
+}
+
+async function loopMessage(number){
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", " Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k=");
+
+  var raw = JSON.stringify({
+      "from":"+19195335013",
+      "to": number,
+      "text":"bump it"
+  });
+
+  console.log(raw)
+
+  var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+  };
+
+  let res = await fetch("https://api.catapult.inetwork.com/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", requestOptions);
+
 }
 
 async function pushNumber(){
@@ -38,14 +49,10 @@ async function pushNumber(){
     let zip = document.getElementById("new_zip").value;
     num = num.replace(/[^0-9]/g,'');
     zip = zip.replace(/[^0-9]/g,'');
-    console.log(num);
-    console.log(zip);
 
     if(((num.length == 11 && num.substring(0,1) == 1) || num.length == 10)
     && num.substring(num.length - 4, num.length - 7) != '555' 
     && zip.length == 5){
-        console.log(num);
-        console.log(zip);
         alert("Congrats.");
         data = {
           "number" : num,

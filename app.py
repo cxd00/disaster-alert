@@ -39,8 +39,8 @@ class Subscriber(Resource):
                 return "{} has already registered".format(args["number"]), 400
         
         subscriber = {
-            "number": args["number"],
-            "zip": args["zip"]
+            "number": int(args["number"]),
+            "zip": int(args["zip"])
         }
 
         subscribers["s"].append(subscriber)
