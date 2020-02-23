@@ -175,14 +175,13 @@ def getStuff():
             person = []
             if r["part"] == "VERB":
                 if r["word"] in ["want", "need"]:
-                    query_ref = txt_ref.where(u'word', u'==', item).get()
-                    print(query_ref)
+                    query_ref = txt_ref.where(u'word', u'==', item).stream()
                     for q in query_ref:
-                        person.append(query_ref["user"])
+                        person.append(u'{} => {}'.format(q.id, q.to_dict()))
                 elif r["word"] in ["have"]:
                     query_ref = txt_ref.where(u'word', u'==', item).get()
                     for q in query_ref:
-                        person.append(query_ref["user"])
+                        person.append(u'{} => {}'.format(q.id, q.to_dict()))
         
         ppl = [str(ppl + j + "\n") for j in person]
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
