@@ -80,5 +80,9 @@ def getJson():
     data = open("data.json").read()
     return jsonify(data)
 
+@app.route('/messages', methods=["POST"])
+def getstuff():
+    print("in the thing")
+
 api.add_resource(Subscriber, "/subscriber/")
 app.run(debug=True)

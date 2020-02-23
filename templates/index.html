@@ -26,5 +26,30 @@
             <center id="admin_portal"></center>
         </center>
     </body>
+    <script src="/__/firebase/init.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="/__/firebase/7.9.1/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="/__/firebase/7.9.1/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="/__/firebase/7.9.1/firebase-auth.js"></script>
+    <script src="/__/firebase/7.9.1/firebase-firestore.js"></script>
+    <!-- Previously loaded Firebase SDKs -->
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyARt9KlJ_bp9iAGUjoaUNXoMBIKohpmZqA",
+            authDomain: "disaster-alerts.firebaseapp.com",
+            databaseURL: "https://disaster-alerts.firebaseio.com",
+            projectId: "disaster-alerts",
+            storageBucket: "disaster-alerts.appspot.com",
+            messagingSenderId: "90711094847",
+            appId: "1:90711094847:web:0d784a2c31c01bfd95ea8a",
+            measurementId: "G-0T55XN59WF"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
     <script src="../static/script.js"></script>
 </html>
