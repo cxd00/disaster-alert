@@ -85,16 +85,17 @@ def getJson():
     return jsonify(data)
 
 @app.route('/messages', methods=["POST"])
+global last
 def getStuff():
     req = request.json
     info = (req["from"], req["text"])
     if info[1] == "E":
+        last = "E"
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
-        print(info[0])
         payload = json.dumps({
             "from":"+19195335013",
             "to": info[0],
-            "text":"https://www.google.com/maps/dir/?api=1&origin=Your+Location&destination=Raleigh-Durham+International+Airport&travelmode=driving"
+            "text":"Evacuation route here: \nhttps://www.google.com/maps/dir/?api=1&origin=Your+Location&destination=Raleigh-Durham+International+Airport&travelmode=driving"
         })
         headers = {
             'Content-Type': 'application/json', 
@@ -107,8 +108,37 @@ def getStuff():
     elif info[1] == "S":
         nlpStuff(info)
 
-    else:
-        print("in F")
+    elif info[1] == "F":
+        last = "F"
+        conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        payload = json.dumps({
+            "from":"+19195335013",
+            "to": info[0],
+            "text":"Enter the phone number of a person you want to check up on in one text message"
+        })
+        headers = {
+            'Content-Type': 'application/json', 
+            'Authorization': ' Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k='
+        }
+        conn.request("POST", "/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        print(data.decode("utf-8"))
+    elif last == "F":
+        conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        payload = json.dumps({
+            "from":"+19195335013",
+            "to": info[0],
+            "text":"{} wants to check up on you! text them back to let then know you're okay".format(info[1])
+        })
+        headers = {
+            'Content-Type': 'application/json', 
+            'Authorization': ' Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k='
+        }
+        conn.request("POST", "/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        print(data.decode("utf-8"))
     return "why"
 
 
