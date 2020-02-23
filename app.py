@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from flask_restful import Api, Resource, reqparse
 import json
+import http.client
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
@@ -88,16 +89,30 @@ def getStuff():
     req = request.json
     info = (req["from"], req["text"])
     if info[1] == "E":
-        print("in e")
+        conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        payload = json.dumps({
+            "from":"+19195335013",
+            "to": "+19105995176",
+            "text":"message",
+        })
+        headers = {
+            'Content-Type': 'application/json', 
+            'Authorization': ' Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k='
+        }
+        conn.request("POST", "/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        print(data.decode("utf-8"))
     elif info[1] == "S":
-        print("in s")
+        nlpStuff(info)
+
     else:
         print("in F")
     return "why"
 
 
 def nlpStuff(info):
-    text = req[1]
+    text = info[1]
     document = language.types.Document(
         content = text,
         language = "en",
