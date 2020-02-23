@@ -171,15 +171,18 @@ def getStuff():
                 item = r["word"]
         
         person = []
+        txt = ""
         for r in results:
             txt_ref = db.collection(u'text-info')
             if r["part"] == "VERB":
                 if r["word"] in ["want", "need"]:
+                    txt = "request"
                     query_ref = txt_ref.where(u'word', u'==', item).stream()
                     for q in query_ref:
                         person.append(q.to_dict()["user"])
                     print(person)
                 elif r["word"] in ["have"]:
+                    txt = "offer"
                     query_ref = txt_ref.where(u'word', u'==', item).get()
                     for q in query_ref:
                         person.append(q.to_dict()["user"])
@@ -187,7 +190,7 @@ def getStuff():
         payload = json.dumps({
             "from":"+19195335013",
             "to": info[0],
-            "text":"{} is interested in your disaster relief request!".format(person[0])
+            "text":"{} is interested in your disaster relief {}!".format(person[0], txt)
         })
         headers = {
             'Content-Type': 'application/json', 
