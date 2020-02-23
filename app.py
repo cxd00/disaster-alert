@@ -178,17 +178,18 @@ def getStuff():
             if r["part"] == "VERB":
                 if r["word"] in ["want", "need"]:
                     txt = "request"
-                    query_ref = txt_ref.where(u'word', u'==', item).stream()
+                    query_ref = txt_ref.where(u'word', u'==', item).where(u'user', u'!=', info[0]).stream()
                     for q in query_ref:
                         print(q.to_dict())
                         person.append(q.to_dict()["user"])
                     print(person)
                 elif r["word"] in ["have"]:
                     txt = "offer"
-                    query_ref = txt_ref.where(u'word', u'==', item).get()
+                    query_ref = txt_ref.where(u'word', u'==', item).where(u'user', u'!=', info[0]).stream()
                     for q in query_ref:
                         person.append(q.to_dict()["user"])
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        p = person[0] or "No one"
         payload = json.dumps({
             "from":"+19195335013",
             "to": info[0],
