@@ -175,12 +175,12 @@ def getStuff():
             person = []
             if r["part"] == "VERB":
                 if r["word"] in ["want", "need"]:
-                    query_ref = txt_ref.where(u'word', u'==', item)
+                    query_ref = txt_ref.where(u'word', u'==', item).get()
                     print(query_ref.toJSON())
                     for q in query_ref:
                         person.append(query_ref["user"])
                 elif r["word"] in ["have"]:
-                    query_ref = txt_ref.where(u'word', u'==', item)
+                    query_ref = txt_ref.where(u'word', u'==', item).get()
                     for q in query_ref:
                         person.append(query_ref["user"])
         
