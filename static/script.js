@@ -4,6 +4,22 @@ let secret = "epsbmp6xw3u274mninwxr6mg4hlvsvcozpgsqgi";
 let pass = "PjFfvrG4T8F6JVYf";
 let base = "dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k="
 
+async function getMessages(){
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", " Basic dC1sNmhwbmdiZjJzYXU0c2hodXlmMmgycTplcHNibXA2eHczdTI3NG1uaW53eHI2bWc0aGx2c3Zjb3pwZ3NxZ2k=");
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+  
+  let res = await fetch("https://api.catapult.inetwork.com/v1/users/u-cnrexzgaxeihkdqvgh6qe7a/messages", requestOptions); 
+  messages = await res.json();
+  return messages
+}
+
 async function callBandwidth(){
   try {
     let request = await fetch('/data')
@@ -28,10 +44,8 @@ async function loopMessage(number){
   var raw = JSON.stringify({
       "from":"+19195335013",
       "to": number,
-      "text":"bump it"
+      "text":"Fire spotted in your area.\nText: \nE for evacuation route \nS for disaster relief \nF for find contacts"
   });
-
-  console.log(raw)
 
   var requestOptions = {
   method: 'POST',
