@@ -90,9 +90,10 @@ def getStuff():
     info = (req["from"], req["text"])
     if info[1] == "E":
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
+        print(info[0])
         payload = json.dumps({
             "from":"+19195335013",
-            "to": "+1" + info[1],
+            "to": "+1" + info[0],
             "text":"https://www.google.com/maps/dir/?api=1&origin=Your+Location&destination=Raleigh-Durham+International+Airport&travelmode=driving"
         })
         headers = {
