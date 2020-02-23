@@ -169,10 +169,10 @@ def getStuff():
         for r in results:
             if r["part"] == "NOUN":
                 item = r["word"]
-        print(item)
+        
+        person = []
         for r in results:
             txt_ref = db.collection(u'text-info')
-            person = []
             if r["part"] == "VERB":
                 if r["word"] in ["want", "need"]:
                     query_ref = txt_ref.where(u'word', u'==', item).stream()
@@ -183,7 +183,6 @@ def getStuff():
                     query_ref = txt_ref.where(u'word', u'==', item).get()
                     for q in query_ref:
                         person.append(q.to_dict()["user"])
-        
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
         payload = json.dumps({
             "from":"+19195335013",
