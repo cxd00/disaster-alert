@@ -125,10 +125,11 @@ def getStuff():
         data = res.read()
         print(data.decode("utf-8"))
     elif last == "F":
+        last == "A"
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
         payload = json.dumps({
             "from":"+19195335013",
-            "to": info[0],
+            "to": "+1"+info[1],
             "text":"{} wants to check up on you! text them back to let then know you're okay".format(info[1])
         })
         headers = {
