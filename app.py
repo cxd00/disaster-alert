@@ -191,11 +191,14 @@ def getStuff():
                         if not q.to_dict()["user"] == info[0]:
                             person.append(q.to_dict()["user"])
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
-        p = person[0] or "No one"
+        if len(person) >0:
+            p = person[0]
+        else:
+            p = "No one"
         payload = json.dumps({
             "from":"+19195335013",
             "to": info[0],
-            "text":"{} is interested in your disaster relief {}!".format(person[0], txt)
+            "text":"{} is interested in your disaster relief {}!".format(p, txt)
         })
         headers = {
             'Content-Type': 'application/json', 
