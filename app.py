@@ -2,8 +2,8 @@ from flask import Flask, render_template, jsonify, request
 from flask_restful import Api, Resource, reqparse
 import json
 import http.client
-from google.cloud import language
-from google.cloud.language import enums
+from google.cloud import language_v1
+from google.cloud.language_v1 import enums
 from google.cloud.language import types
 
 app = Flask(__name__)
@@ -107,7 +107,7 @@ def getStuff():
         print(data.decode("utf-8"))
     elif info[1] == "S":
         last = "S"
-        nlpStuff(info)
+        console.log(nlpStuff(info))
 
     elif info[1] == "F":
         last = "F"
@@ -146,11 +146,22 @@ def getStuff():
 
 def nlpStuff(info):
     text = info[1]
-    document = language.types.Document(
-        content = text,
-        language = "en",
-        type='PLAIN_TEXT',
-    )
+
+    client = language_v1.LanguageServiceClient()
+    type_ = enums.Document.Type.PLAIN_TEXT
+    language = "en"
+    document = {"content": text, "type": type_, "language": language}
+    encoding_type = enums.EncodingType.UTF8
+    response = client.analyze_syntax(document, encoding_type=encoding_type)
+    results = []
+    for token in response.tokens:
+        txt = token.txt
+        results.append({
+            "word" : token.txt,
+            "part" : enums.PartOfSpeech.Tag(token.part_of_speech.tag).name
+        })
+    return results
+
     
 
 
