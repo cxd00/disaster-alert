@@ -180,6 +180,7 @@ def getStuff():
                     txt = "request"
                     query_ref = txt_ref.where(u'word', u'==', item).stream()
                     for q in query_ref:
+                        print(q.to_dict())
                         person.append(q.to_dict()["user"])
                     print(person)
                 elif r["word"] in ["have"]:
