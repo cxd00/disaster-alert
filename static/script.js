@@ -12,11 +12,12 @@ function login(){
   let phrase = document.getElementById('passphrase').value;
   if(phrase=="drinkmorewater"){
     let html = `<br>
-    <center>Message: <br>
+    <center class="blinking">Message: <br>
         <textarea id="message"style="width: 15rem; margin: 10px; text-align: center;" type="text"></textarea>
         <br> Target Zip Code:
         <input id="zip"style="width: 5rem; margin: 10px;" type="text">
-        <br><button onclick="callBandwidth()">Send Message</button>
+        <br><button class = "blink" onclick="callBandwidth()">Send Message</button>
+
     </center>`;
     document.getElementById('admin_portal').innerHTML = html;
   }

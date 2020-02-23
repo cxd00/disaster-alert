@@ -17,13 +17,16 @@
         <center class="blinking">Enter Zip Code:</center>
         <center>
             <input id="new_zip"style="width: 10rem;" type="text" min="10" max="11">
-            <br><button onclick="pushNumber()">Subscribe</button>
+
+            <br><button class = "blink" onclick="pushNumber()">Subscribe</button>
             Firebase: <input id="use_firebase" type="checkbox"unchecked>
+
         </center>
         <div id="map"></div>
         <center style="padding: 100px;">
+            <center class="blinking">Password:</center>
             <input id="passphrase"style="width: 10rem; text-align: center;" type="password">
-            <br><button onclick="login()">Admin Login</button>
+            <br><button class = "blink" onclick="login()">Admin Login</button>
             <center id="admin_portal"></center>
         </center>
         <div class="footer">
