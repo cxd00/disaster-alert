@@ -1,6 +1,9 @@
 from flask import Flask, render_template, jsonify, request
 from flask_restful import Api, Resource, reqparse
 import json
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
 
 app = Flask(__name__)
 api = Api(app)
@@ -81,9 +84,27 @@ def getJson():
     return jsonify(data)
 
 @app.route('/messages', methods=["POST"])
-def getstuff():
-    print(request.json)
-    return
+def getStuff():
+    req = request.json
+    info = (req["from"], req["text"])
+    if info[1] == "E":
+        print("in e")
+    elif info[1] == "S":
+        print("in s")
+    else:
+        print("in F")
+    return "why"
+
+
+def nlpStuff(info):
+    text = req[1]
+    document = language.types.Document(
+        content = text,
+        language = "en",
+        type='PLAIN_TEXT',
+    )
+    
+
 
 api.add_resource(Subscriber, "/subscriber/")
 app.run(debug=True, host="0.0.0.0")
