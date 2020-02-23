@@ -166,6 +166,7 @@ def getStuff():
     elif last == "S":
         last == "B"
         results = nlpStuff(info)
+        print(results)
         for r in results:
             if r["part"] == "NOUN":
                 item = r["word"]
