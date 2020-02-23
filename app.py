@@ -107,7 +107,7 @@ def getStuff():
         print(data.decode("utf-8"))
     elif info[1] == "S":
         last = "S"
-        console.log(nlpStuff(info))
+        print(nlpStuff(info))
 
     elif info[1] == "F":
         last = "F"
