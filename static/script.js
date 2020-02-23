@@ -94,9 +94,11 @@ async function pushNumber(){
     num = num.replace(/[^0-9]/g,'');
     zip = zip.replace(/[^0-9]/g,'');
 
-    if(((num.length == 11 && num.substring(0,1) == 1) || num.length == 10)
-    && num.substring(num.length - 4, num.length - 7) != '555' 
-    && zip.length == 5){
+    if(num.length==10){
+      num = '+1'+num;
+    }
+
+    if(num.length == 12 && num.substring(1,2) == 1 && num.substring(num.length - 4, num.length - 7) != '555' && zip.length == 5){
         alert("Congrats.");
         if(document.getElementById('use_firebase').checked = true){
           db.collection("subscribers").add({
@@ -121,7 +123,25 @@ async function pushNumber(){
     } else {
         alert ("Please type in a valid zip code and phone number."); 
     }
+  }
 
-}
+    function unsubscribe(){
+      let num = document.getElementById("delete_num").value;
+      num = num.replace(/[^0-9]/g,'');
+      if(num.length==10){
+        num = '+1'+num;
+      }
+      if(num.length == 12 && num.substring(1,2) == 1 && num.substring(num.length - 4, num.length - 7) != '555'){
+        var delete_query = db.collection('subscribers').where('number','==',num);
+        delete_query.get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            doc.ref.delete();
+            alert("deleted "+num);
+          });
+        });
+      }
+  
+    }
+
 
 
