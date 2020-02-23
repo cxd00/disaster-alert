@@ -93,7 +93,7 @@ def getStuff():
         print(info[0])
         payload = json.dumps({
             "from":"+19195335013",
-            "to": "+1" + info[0],
+            "to": info[0],
             "text":"https://www.google.com/maps/dir/?api=1&origin=Your+Location&destination=Raleigh-Durham+International+Airport&travelmode=driving"
         })
         headers = {
