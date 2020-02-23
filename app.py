@@ -178,6 +178,7 @@ def getStuff():
                     query_ref = txt_ref.where(u'word', u'==', item).stream()
                     for q in query_ref:
                         person.append(u'{} => {}'.format(q.id, q.to_dict()))
+                    print(person)
                 elif r["word"] in ["have"]:
                     query_ref = txt_ref.where(u'word', u'==', item).get()
                     for q in query_ref:
