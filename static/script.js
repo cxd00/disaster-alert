@@ -14,6 +14,8 @@ function login(){
     let html = `<br>
     <center>Message: <br>
         <textarea id="message"style="width: 15rem; margin: 10px; text-align: center;" type="text"></textarea>
+        <br> Target Zip Code:
+        <input id="zip"style="width: 5rem; margin: 10px;" type="text">
         <br><button onclick="callBandwidth()">Send Message</button>
     </center>`;
     document.getElementById('admin_portal').innerHTML = html;
@@ -42,6 +44,12 @@ async function callBandwidth(){
   if(message==""){
     message = "this is a TEST";
   }
+  let zip = document.getElementById('zip').value;
+  if(zip.length!=5){
+    zip =27514;
+  }else{
+    zip = parseInt(zip);
+  }
   // try {
   //   let request = await fetch('/data')
   //   subscriberInfo = JSON.parse(await request.json());
@@ -54,8 +62,6 @@ async function callBandwidth(){
   // } catch (error) {
   //     console.log(error);
   // }
-
-  let zip =27514;
   db.collection("subscribers").where("zip","==",zip).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data().number}`);
