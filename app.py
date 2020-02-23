@@ -92,8 +92,8 @@ def getStuff():
         conn = http.client.HTTPSConnection("api.catapult.inetwork.com")
         payload = json.dumps({
             "from":"+19195335013",
-            "to": "+19105995176",
-            "text":"message",
+            "to": "+1" + info[1],
+            "text":"https://www.google.com/maps/dir/?api=1&origin=Your+Location&destination=Raleigh-Durham+International+Airport&travelmode=driving"
         })
         headers = {
             'Content-Type': 'application/json', 
