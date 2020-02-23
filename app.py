@@ -85,8 +85,8 @@ def getJson():
     return jsonify(data)
 
 @app.route('/messages', methods=["POST"])
-global last
 def getStuff():
+    global last
     req = request.json
     info = (req["from"], req["text"])
     if info[1] == "E":
