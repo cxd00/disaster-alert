@@ -106,6 +106,7 @@ def getStuff():
         data = res.read()
         print(data.decode("utf-8"))
     elif info[1] == "S":
+        last = "S"
         nlpStuff(info)
 
     elif info[1] == "F":
@@ -130,7 +131,7 @@ def getStuff():
         payload = json.dumps({
             "from":"+19195335013",
             "to": "+1"+info[1],
-            "text":"{} wants to check up on you! text them back to let then know you're okay".format(info[1])
+            "text":"{} wants to check up on you! Text them back to let them know you're okay".format(info[0])
         })
         headers = {
             'Content-Type': 'application/json', 
